@@ -10,8 +10,8 @@ var abi = [
   "function remain() view returns (uint256)",
   "function sold() view returns (uint256)",
 ];
-// var address = "0xdcd633c764068cf385dd404f54de1e0ff283b8fb";
-var address = "0xcc5D68Ee952A8E272e60522461aA0135ED34F487";
+var address = "0xdcd633c764068cf385dd404f54de1e0ff283b8fb";
+//var address = "0xcc5D68Ee952A8E272e60522461aA0135ED34F487";
 function connect() {
   provider.send("eth_requestAccounts", []);
 }
