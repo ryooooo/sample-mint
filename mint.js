@@ -47,10 +47,13 @@ function hasPreOpened() {
   setInterval(function () {
     var contract = new ethers.Contract(address, abi, provider);
     contract.hasPreOpened().then(function (b) {
-      contract.preOpenTime().then(function (t) {
-        document.querySelector("#has-pre-opened").innerText =
-          "has pre opened(" + t + "): " + b;
-      });
+//       contract.preOpenTime().then(function (t) {
+//         document.querySelector("#has-pre-opened").innerText =
+//           "has pre opened(" + t + "): " + b;
+//       });
+      if(b == true){
+        document.querySelector("#has-pre-opened").innerText = "WL向けプレセール中";
+      }
     });
   }, 3000);
 }
