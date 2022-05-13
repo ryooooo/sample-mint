@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Presale for WL</title>
+    <script
+      src="https://cdn.ethers.io/lib/ethers-5.4.umd.min.js"
+      type="application/javascript"
+    ></script>
+    <script>
+      var provider = new ethers.providers.Web3Provider(window.ethereum);
+      var abi = [
+        "function buyPre(uint8) external payable",
+        "function buy(uint8) external payable",
+        "function preOpenTime() view returns (uint256)",
+        "function openTime() view returns (uint256)",
+        "function hasOpened() view returns (bool)",
+        "function hasPreOpened() view returns (bool)",
+        "function whitelist(address) view returns (bool)",
+        "function remain() view returns (uint256)",
+        "function sold() view returns (uint256)",
+      ];
+      var address = "0x7479d0Ea00B5AEC52d75cAcF86088a3Ca844503D";
+
+      function connect() {
+        provider.send("eth_requestAccounts", []);
+      }
+
+      function getAddress() {
+        setInterval(function () {
+          document.querySelector("#selected-address").innerText =
+            "address: " + provider.provider.selectedAddress;
+        }, 3000);
+      }
+
+      function remain() {
+        setInterval(function () {
+          new ethers.Contract(address, abi, provider).remain().then(function (r) {
+            document.querySelector("#remain").innerText = r;
+          });
+        }, 3000);
+      }
+
+      function txLogger(r) {
+        document.querySelector("#tx").innerText = "tx: " + r.hash;
+      }
+
+      function buyPre(amount) {
+        var signer = provider.getSigner();
+        var contract = new ethers.Contract(address, abi, signer);
+        contract
+          .buyPre(amount, {
+            value: ethers.utils.parseEther((0.09 * amount).toString()),
+          })
+          .then(txLogger);
+      }
+    </script>
+  </head>
+  <body style="color: #0E2E47;">
+    <h3 style="margin-bottom: 10px;">Presale for WL now</h3>
+    <div id="remain_box" style="margin-bottom: 10px;">
+      remaining: <span id="remain"></span>/999
+    </div>
+    <div>
+      <button onClick="connect()" style="border: 2px solid #000; border-radius: 0; background: #fff; font-size: 22px;">connect</button>
+    </div>
+    <div id="selected-address" style="font-size: 13px;">address:</div>
+    <button id="buyPre" onClick="buyPre(1)" style="border: 2px solid #000; border-radius: 0; background: #fff; font-size: 22px; margin-top: 10px; width: 200px;">Mint 1 Pass</button>
+    <button id="buyPre" onClick="buyPre(2)" style="border: 2px solid #000; border-radius: 0; background: #fff; font-size: 22px; margin-top: 10px; width: 200px;">Mint 2 Passes</button>
+    <div id="tx" style="display: none;">tx:</div>
+  </body>
+  <script>
+    getAddress();
+    remain();
+  </script>
+</html>
